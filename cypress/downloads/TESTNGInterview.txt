@@ -1,0 +1,204 @@
+TESTNG
+TestNG stands for "Testing Next Generation". It is an` automation testing framework used for java programming language developed by Credric beust, and it comes after the inspiration from the JUnit framework. TestNG consists of all the features of JUnit framework but also contains some more additional features that make TestNG more powerful.
+
+2]What are the advantages of TestNG?
+It generates the report in a proper format, which includes the following information:
+Number of test cases executed.
+Number of test cases passed.
+Number of test cases failed.
+Number of test cases skipped
+Multiple test cases can be grouped easily by converting them into a testng.xml file, in which you can set the priority of each test case that determines which test case should be executed first.
+With the help of TestNG, you can execute the multiple test cases on multiple browsers known as cross-browser testing.
+The TestNG framework can be easily integrated with other tools such as Maven. Jenkins, etc.
+Annotations used in a TestNG framework are easily understandable such as @BeforeMethod, @AfterMethod, @BeforeTest, @AfterTest.
+WebDriver does not generate the reports while TestNG generates the reports in a readable format.
+TestNG simplifies the way the test cases are coded. We do not have to write the static main method. The sequence of actions is maintained by the annotations only.
+TestNG allows you to execute the test cases separately. For example, if you have six test cases, then one method is written for each test case. When we run the program, five methods are executed successfully, and the sixth method is failed. To remove the error, we need to run only the sixth method, and this can be possible only through TestNG. Because TestNG generates testng-failed.xml file in the test output folder, we will run only this xml file to execute the failed test case.
+3]Order of TESTNG Annotation seq
+@BEFORE SUITE
+@BEFORE TEST
+@BEFORE CLASS
+@BEFORE METHOD
+@TEST
+@AFTERMETHOD
+@AFTERCLASS
+@AFTERTEST
+@AFTERSUITE
+4]How to set the priorities in TestNG?
+If we don't setup propority it gets executed in alphabetical order.
+
+import org.testng.annotations.Test;  
+public class Test_methods   
+{  
+@Test(priority=2)  
+public void test1()  
+{  
+System.out.println("Test1");  
+}  
+@Test(priority=1)  
+public void test2()  
+{  
+System.out.print("Test2");  
+}  
+}  
+
+5]Defie groping in testNg
+If we want to run some particular set of test cases together then we can group them
+@Test(groups="It Company")
+public void run()
+{Sop("Print");
+}
+@Test(groups="It Company")
+public void run1()
+{Sop("Print1");
+}
+
+XML->
+<SUITE NAME="SUITE NAME">
+<TEST NAME="ABC">
+<GROUPS>
+<RUN>
+<INCLUDE NAME="It Company"/>
+</RUN>
+</GROUPS>
+<CLASSES>
+<CLASS NAME="packagename.classname"></CLASS>
+</CLASSES>
+</TEST>
+</SUITE>
+
+6]What is a dependency in TESTNG?
+Two types-
+dependsOnMethods-
+dependson method gets executed first later the dependent method
+public class Login   
+{  
+ @Test  
+ public void login()  
+ {  
+     System.out.println("Login page");  
+ }  
+ @Test(dependsOnMethods="login")  
+ public void home()  
+ {  
+     System.out.println("Home page");  
+       
+ }  
+}  
+dependsOnGroups -
+It executes the group of test methods before the dependent test method.
+public class Test_cases  
+{  
+ @Test(groups="test")  
+ public void testcase1()  
+ {  
+     System.out.println("testcase1");  
+ }  
+ @Test(groups="test")  
+ public void testcase2()  
+ {  
+     System.out.println("testcase2");  
+ }  
+ @Test(dependsOnGroups="test")  
+ public void testcase3()  
+ {  
+     System.out.println("testcase3");  
+ }  
+}  
+7]What is timeOut in TestNG?
+While running test cases, there can be a case when some test cases take much more time than expected. In such a case, we can mark the test case as a failed test case by using timeOut.
+
+TimeOut in TestNG allows you to configure the time period to wait for a test to get completely executed. It can be configured in two levels:
+
+At the suit level: It will be available to all the test methods.
+At each method level: It will be available to a particular test method.
+The timeOut attribute can be specified as shown below:
+
+@Test( timeOut = 700)  
+The above @Test annotation tells that the test method will be given 700 ms to complete its execution otherwise it will be marked as a failed test case.
+
+8]What is invocationCount in TestNG?
+No of times we want to executes the same test
+@Test(invocationCount=5)
+public void test1(){
+Sop("Print")
+}
+executes 5 times
+9]What is a testng.xml file?
+It contains all the Test configurations and this XML file can be used to run & organize our test.
+We can automatically generte this file using testng eclipse plugin.
+It defines the order of the execution of all the test cases.
+It allows you to group the test cases and can be executed as per the requirements.
+It executes the selected test cases.
+In TestNG, listeners can be implemented at the suite level.
+It allows you to integrate the TestNG framework with tools such as Jenkins.
+
+10]Parameter passing through xml file
+@Parameters({"myName"})  
+@Test  
+public void Name( String myName){
+SOP(myName);
+}
+XML -
+<Suite name="Suites">
+<test name="test1">
+<parameter name="myName" value="Viashu">
+<classes>
+<class name ="class Nmae"/>
+</classes>
+</test>
+</suite>
+
+11]How to disable the testcases?
+@Test(enabled=false)
+public void run()
+{
+
+}
+12]What is soft & hard assertion?
+Soft Assertion -
+Execution will continue , by throwing an exception when assert fails.
+Hard Assertion -
+Execution will stop after
+assert condition fails.
+public class Assertion {  
+SoftAssert soft_assert=new SoftAssert();  
+@Test  
+public void Soft_Assert()  
+{  
+ soft_assert.assertTrue(false);  
+ System.out.println("soft assertion");  
+}  
+@Test  
+public void Hard_Assert()  
+{  
+ Assert.assertTrue(false);  
+ System.out.println("hard assertion");  
+}  
+}  
+
+13]@Listener
+The most widely used listener is ITestListener 
+This listener tells what action to take when test pass,fail,skip,etc
+Create a seperte class & implement ITestListener,again create a class there above the test methods provide -
+@Listeners(packagename.classname.class) 
+OR
+By declaring in xml file
+<suite>
+<listeners>
+<listener class name="pacakgename.classname/>
+</listeners>
+<test name="Itest">
+<classes>
+<class name="packagename.classname"/>
+</classes>
+</test>
+</suite>
+Provides 7 methods
+onTestStart()
+onTestSuccess()
+onTestFailure()
+onTestSkipped()
+onTestFailedButWithinSuccessPercentage()
+onStart()
+onFinish()
